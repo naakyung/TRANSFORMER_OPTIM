@@ -1,0 +1,48 @@
+- dataset=FX_SMB
+- dataset.num_workers=3
+
+- dataset.val_batch_size=512
+
+- dataset.start_date=010110
+- dataset.end_date=021023
+- dataset.val_start_date=120122
+- dataset.test_start_date=
+
+- dataset.pretrain_training_mode=False
+- dataset.price_norm=Inorm
+
+- dataset.f_horizon=5
+- dataset.time_interval=60
+- dataset.data_timescope_change=1
+- dataset.label_thresh=0.05
+
+- dataset.volume_log_transform=True
+- dataset.security_ticker=USDF
+- dataset.loss_fn=CrossEntropy
+
+- dataset.fine_tune_mode=False
+- dataset.outside_bollinger=False
+- dataset.inside_bollinger=True
+
+- dataset.cumsig=1
+- dataset.label_mode=ohlc_once_first_TBM
+- dataset.input_filter_condition=False
+
+- dataset.sma_window=15
+- dataset.std_mp_constant=1.5
+- dataset.data_type=float32
+
+
+- model=Patchformer_ohlc_USDFSMB
+- model.model_type=LightPatch
+
+- model.batch_size=8192
+- model.n_epochs=100
+- model.lr=0.0001
+
+- model.d_ff=256
+- model.n_heads=8
+- model.d_model=128
+- model.e_layers=1
+- model.patch_len=45
+- model.stride=3

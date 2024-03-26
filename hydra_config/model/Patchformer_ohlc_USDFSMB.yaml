@@ -1,0 +1,57 @@
+
+##### Basic Details ##### 
+model_name        : "Vanila_Transformer"        ## Option :: ["Patchformer_ohlc_USDFSMB", "Patchformer_ohlc_TimePatch", "DNN", "Vanila_Transformer"]                
+model_path        : ""
+# fine_tune_mode    : False
+
+##### Device Setting #####
+n_epochs          : 600  
+batch_size        : 1024                              ## Option :: [8192, 4096, 2048, 1024]
+lr                : 0.00001                           ## Option :: [0.0001, 0.00001]
+num_classes       : 2                                 ## Option :: [1, 2 (up, down), 3]
+
+##### Data Embedding, Patch Related #####
+pe                : "zeros"                           ## Option :: ["zeros", "sincos"]  Algorithm for Positional Encoding                            
+patch_len         : 5                                 ## Patch size for Patch-Former 
+enc_in            : 8                                 ## Option :: 1(Close), 2(fft, diff), 3(word2vec_enc), 
+                                                      ##           4(OHLC),  6(OHLC, H_diff, L_diff)
+
+stride            : 3 
+learn_pe          : True 
+padding_patch     : False
+
+##### Encoder Related #####
+e_layers          : 1                                 ## number of encoding layers
+n_heads           : 8                                 ## number of heads for multi-head attention 
+d_model           : 128
+d_k               : null
+d_v               : null
+d_ff              : 256
+
+
+##### ETC. Parameter #####
+activation        : "relu"
+norm              : "BatchNorm"
+
+pre_norm          : False
+attn_dropout      : 0
+dropout           : 0.1
+
+res_attention     : True
+output_attention  : False 
+
+## Flatten Head Related
+head_type         : "flatten"
+pretrain_head     : False
+individual        : True
+head_dropout      : 0.1
+fc_dropout        : 0.1
+
+## Inorm Related
+Inorm_affine      : False
+subtract_last     : False
+max_seq_len       : 1024
+
+## Decompose model into Residual, Trend
+decomposition: False
+kernel_size: 9

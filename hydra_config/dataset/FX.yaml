@@ -1,0 +1,99 @@
+##### Basic Details #####                                                                            
+## Option :: ["c", "cub", "cfreq", "mvf", "scaled_cmvf",
+##            "ohlc_dxy_hlc", "ohlc_dxy_hlc_ks", "ohlc_dxy_hlc_cnh_ks" 
+##            "scaled_mamv", "scaled_mamv_kospi_ret", "scaled_mamv_kospi_ret_5wr", "scaled_hlcma_mv_kospi_ret_5wr",
+##            "scaled_mamv_kospi_ret_5wr_dxy_ret"]
+feature_mode    : "ohlc_dxy_hlc_ks"                                                                   ## Option :: ["float32", "float64"] Default as "float32", but supports "float64" if more precise calculations are needed
+data_type       : "float64"
+
+fx_data_dir     : "/home/jovyan/shared/wealth-solution/FX_modeling/Transformer_optim/Datas"           ## FX data directory 
+
+
+##### Dates & Duration #####
+start_date        : "010110"                                                                          ## start date for train-val-test dataset
+end_date          : "123120"                                                                          ## end date   for train-val-test dataset
+train_start_date  : "010110"                                                                          ## start date for train                      
+train_split_point : "080116"
+val_start_date    : "010120"                                                                          ## start date for validation                 
+val_end_date      : "123120"                                                                          ## end date   for validation
+test_start_date   : "010121"                                                                          ## start date for test                       
+
+market_start_time : "900"                                                                             ## Market Start Time
+market_end_time   : "1530"                                                                            ## Market End Time 
+                                                                
+##### Training Modes #####
+scaling        : False                                                                                ## on//off Raw Data Scaling in dataloader
+volat_grouping : True
+data_padding   : True
+data_patching  : False
+train_hldiff   : False                                                                                ## on//off Making 'hldiff'      
+train_fft      : False                                                                                ## on//off Making 'fft'
+
+pretrain_training_mode: False
+pretrain_patch_n      : 9
+pretrain_masking_ratio: 0.7
+pretrain_log_name     : "trial1"
+
+
+save_pred             : False                                                                       # used for testing, to save the predictions; possibly for simulation, too
+model_save_freq       : 1
+
+hyperparameter_ray_num_samples: 8                                                                  # number of trials of ray hyperparameter search, mission=hyperparameter needed
+early_stopping                : 0
+seed                          : 100
+
+##### Device Config ##### 
+cuda              : True
+gpus              : [0]
+
+##### Dataloader Configurations #####                                                                                 
+idx_delay         : 0                                                                                   # set an arbitrary delay to give an offset to overcome possible delays in the system
+
+val_batch_size    : 512                                                                                 # batch size for validation & test dataset
+random_val_days   : False                                                                               # option for shuffling validation days; uses start_dates and end_dates to get number of days in train-val-test split; some validation days may be earlier than some training days
+shuffle_batch     : True                                                                                # option for shuffling batch every epoch
+val_simulation    : False                                                                               # option for running simulation on validation set
+
+loss_fn           : 'CrossEntropy'                                                                      # 'CrossEntropy', 'LogitNormLoss', 'FocalLoss', 'RMSELoss'
+focal_loss_gamma  : 2                                                                                   # hyperparameter for focal loss
+enable_scheduler  : False                                                                               # option for enabling learning rate scheduler
+
+npy               : True                                                                                # whether use npy or json.zst input format, multiprocessing only available at npy format
+mp                : True                                                                                # whether use multiprocessing
+num_workers       : 3                                                                                   # number of processes in multiprocessing for training dataloader ( Default : 3 )
+val_num_workers   : 3                                                                                   # number of processes in multiprocessing for validation & test dataloader ( Default : 3 )
+prefetch_batches  : 5                                                                                   # how many batches each workers are aim to load & process beforehand
+num_pair_logits   : 1
+
+##### Dataloader - Model Configurations #####
+predict_type                : 'Classification'                                                          # For transformer ["classification", "Regression"]
+
+label_mode                  : "5bp_after5_ud"                                                           # "bid_ask", "midprice", "high_low", "optim_u", "optim_b"
+time_interval               : 30                                                                        # time interval for input
+f_horizon                   : 5                                                                         # time interval for prediction 
+       
+label_var                   : False                                                                     # option for using current spread and take max       
+label_thresh                : 0.05                                                                      # 0.2 %, for midprice_once_mono, 0.4 % for midprice_once_volat (default : 0.1(10bp))
+label_secondary_lik_thresh  : 0.85                                                                      # likelihood thresh for secondary models
+
+smax                        : False                                                                     # softmax on // off in the model
+smax_out                    : True                                                                      # sigmoid on // off on the model output
+sigmoid_out                 : False
+
+test_num_classes            : 1                                                                         # Number of classes in test setting
+test_lik_thresh             : 0.5                                                                       # 2to3 conversion lik threshold
+cumsig                      : 1                                                                         # Label cumulative signals
+test_cumsig                 : 5                                                                         # cumulative signal for test
+
+interval_standard           : True                                                                  
+normalize_time              : False                                                                     # option for normalizing times or by constant
+norm_by                     : 'none'                                                                    # "time", "level", "none" in case of Inorm
+
+ohlc_cross_attn             : True                                                                      # option for using cross-attention for OHLC data
+
+##### Miscellaneous #####
+gaussian_noise_p            : 0.0                                                                       # probability of adding gaussian noise based on std. normal
+erase_p                     : 0.0                                                                       # probability of erasing a timestep before feeding to the model
+
+sliding_sec                 : 1                                                                         # dataloader loading steps
+label_ewma                  : False                                                                     # option for exponential weighted moving average (ewma) to the future horizon midprices in labeling process

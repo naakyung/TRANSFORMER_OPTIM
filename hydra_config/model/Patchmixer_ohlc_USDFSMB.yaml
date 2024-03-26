@@ -1,0 +1,61 @@
+
+##### Basic Details ##### 
+model_name        : "Patchmixer_ohlc_pad_USDFSMB"        ## Option :: ["Patchformer_ohlc_USDFSMB", "Patchformer_ohlc_TimePatch", "DNN", "Patchformer_ohlc_sample", "Patchmixer_ohlc_USDFSMB"]    
+name              : "Patchmixer_ohlc_pad_USDFSMB"             
+model_path        : ""
+# fine_tune_mode    : False
+
+##### Device Setting #####
+# patchmixer : batch_size : 512, lr = 0.00001
+# 120min 
+n_epochs          : 600  
+# 2048
+batch_size        : 2048                              ## Option :: [8192, 4096, 2048]
+lr                : 0.00001                           ## Option :: [0.0001, 0.00001]
+num_classes       : 2                                 ## Option :: [1, 2 (up, down), 3]
+
+##### Data Embedding, Patch Related #####
+pe                : "zeros"                           ## Option :: ["zeros", "sincos"]  Algorithm for Positional Encoding                            
+patch_len         : 6                                ## Patch size for Patch-Former 
+enc_in            : 8                                 ## Option :: 1(Close), 2(fft, diff), 3(word2vec_enc), 
+                                                      ##           4(OHLC),  6(OHLC, H_diff, L_diff)
+
+stride            : 6 
+learn_pe          : True 
+padding_patch     : "end"
+
+##### Encoder Related #####
+e_layers          : 1                                 ## number of encoding layers
+n_heads           : 8                                 ## number of heads for multi-head attention 
+d_model           : 128
+d_k               : null
+d_v               : null
+d_ff              : 256
+
+
+##### ETC. Parameter #####
+activation        : "relu"
+norm              : "BatchNorm"
+
+pre_norm          : False
+attn_dropout      : 0
+dropout           : 0.1
+
+res_attention     : True
+output_attention  : False 
+
+## Flatten Head Related
+head_type         : "flatten"
+pretrain_head     : False
+individual        : True
+head_dropout      : 0.1
+fc_dropout        : 0.1
+
+## Inorm Related
+Inorm_affine      : False
+subtract_last     : False
+max_seq_len       : 1024
+
+## Decompose model into Residual, Trend
+decomposition: False
+kernel_size: 9

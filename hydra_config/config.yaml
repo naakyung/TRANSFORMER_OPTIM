@@ -1,0 +1,11 @@
+## config.yaml
+
+debug: False
+mission: "train"                                  ## Option :: ["train", "hyperparameter_tune"]
+load_model: False
+defaults:
+  - _self_
+  - dataset : FX
+  - model   : Patchmixer_ohlc_USDFSMB
+
+#  - optional dataset_model: ${dataset}_${model}
